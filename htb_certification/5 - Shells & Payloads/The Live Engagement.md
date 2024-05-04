@@ -264,9 +264,68 @@ dir c:\shares\
 
 ## Host 2
 
-### Enumeration
+### whatweb
 ```
 $ whatweb http://blog.inlanefreight.local/
 http://blog.inlanefreight.local/ [200 OK] Apache[2.4.41], Cookies[PHPSESSID], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 (Ubuntu)], HttpOnly[PHPSESSID], IP[172.16.1.12], JQuery, Lightbox, PasswordField[password], Script, Title[Inlanefreight Gabber], X-UA-Compatible[IE=edge]
+```
+
+### nmap
+```
+$ sudo nmap -sCV -Pn -O blog.inlanefreight.local
+[sudo] password for htb-student: 
+Starting Nmap 7.92 ( https://nmap.org ) at 2024-05-04 13:04 EDT
+Nmap scan report for blog.inlanefreight.local (172.16.1.12)
+Host is up (0.0082s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 f6:21:98:29:95:4c:a4:c2:21:7e:0e:a4:70:10:8e:25 (RSA)
+|   256 6c:c2:2c:1d:16:c2:97:04:d5:57:0b:1e:b7:56:82:af (ECDSA)
+|_  256 2f:8a:a4:79:21:1a:11:df:ec:28:68:c2:ff:99:2b:9a (ED25519)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+| http-robots.txt: 1 disallowed entry 
+|_/
+|_http-title: Inlanefreight Gabber
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+MAC Address: 00:50:56:B9:4C:3B (VMware)
+Device type: general purpose
+Running: Linux 4.X|5.X
+OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5
+OS details: Linux 4.15 - 5.6
+Network Distance: 1 hop
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 11.10 seconds
+```
+
+### gobuster
+```
+$ gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://blog.inlanefreight.local/
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://blog.inlanefreight.local/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2024/05/04 13:10:09 Starting gobuster in directory enumeration mode
+===============================================================
+/data                 (Status: 301) [Size: 335] [--> http://blog.inlanefreight.local/data/]
+/static               (Status: 301) [Size: 337] [--> http://blog.inlanefreight.local/static/]
+/app                  (Status: 301) [Size: 334] [--> http://blog.inlanefreight.local/app/]   
+/LICENSE              (Status: 200) [Size: 35149]                                            
+/server-status        (Status: 403) [Size: 289]                                              
+                                                                                             
+===============================================================
+2024/05/04 13:17:18 Finished
+===============================================================
 
 ```
