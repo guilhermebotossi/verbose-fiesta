@@ -246,18 +246,27 @@ As seen in the  image above, we have a field to upload configuration files, lets
 
 ![[Pasted image 20240428192510.png]]
 
-The uploader accepted a png file, now lets try an aspx webshell
+I uploaded the [webshell](https://github.com/xl7dev/WebShell/blob/master/Aspx/ASPX%20Shell.aspx)  to the page above and tried to access the following link 
+```
+http://status.inlanefreight.local/files/webshell.aspx
+```
+
+
+Andddd we got a webshell , just execute the following command
 
 ```
-cp /usr/share/laudanum/aspx/shell.aspx laudanum_shell.aspx
+dir c:\shares\
 ```
 
-Just remember to add your IP into the  array **string[] allowedIps** inside the script
-
-
-
-
+![[Pasted image 20240504135829.png]]
 
 ---
 
 ## Host 2
+
+### Enumeration
+```
+$ whatweb http://blog.inlanefreight.local/
+http://blog.inlanefreight.local/ [200 OK] Apache[2.4.41], Cookies[PHPSESSID], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 (Ubuntu)], HttpOnly[PHPSESSID], IP[172.16.1.12], JQuery, Lightbox, PasswordField[password], Script, Title[Inlanefreight Gabber], X-UA-Compatible[IE=edge]
+
+```
