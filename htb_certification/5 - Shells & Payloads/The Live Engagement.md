@@ -329,3 +329,81 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 
 ```
+
+
+### Accessing the URL's go buster found
+
+![[Pasted image 20240504144358.png]]
+
+```
+curl http://blog.inlanefreight.local/data/config.ini
+
+;[database]
+;db_connection = sqlite
+;sqlite_db = app/db/sqlite/sqlite.db
+
+;[database]
+db_connection = mysql
+mysql_socket = /var/run/mysqld/mysqld.sock
+mysql_host = 127.0.0.1
+mysql_port = 3306
+mysql_user = root
+mysql_pass = "HTB_@cademy_r00t!"
+db_name = blog
+
+[profile]
+title = Inlanefreight Gabber
+name = Slade Wilson
+pic_small = static/images/23al.jpg
+pic_big = static/images/port.jpg
+cover = static/images/cover.jpg
+
+[language]
+lang = en
+
+[components]
+highlight = true
+
+[custom]
+theme = theme02
+;header = data/header.html
+;styles[] = static/styles/custom1.css
+;styles[] = static/styles/custom2.css
+;scripts = static/styles/scripts.css
+
+[bbcode]
+;bbtags[quote] = "<quote>{param}</quote>"
+
+[admin]
+force_login = true
+nick = admin
+pass = 'admin123!@#'
+
+[friends]
+;friends[user] = pass
+;friends[user] = pass
+
+[directories]
+images_path = data/i/
+thumbnails_path = data/t/
+logs_path = data/logs/
+
+[proxy]
+;proxy = hostname:port
+;proxyauth = username:password
+;proxytype = CURLPROXY_HTTP ; default, if not set
+;proxytype = CURLPROXY_SOCKS4
+;proxytype = CURLPROXY_SOCKS5
+
+;URL_PREFIX type:
+;proxy = http://your.page.com/proxy.cgi?
+;proxyauth = username:password
+;proxytype = URL_PREFIX
+
+[system]
+timezone = America/New_York
+system_name = blog.inlanefreight
+version = 1.3
+debug = true
+logs = false
+```
