@@ -407,3 +407,17 @@ version = 1.3
 debug = true
 logs = false
 ```
+
+### checking the data/logs folder
+
+```
+┌─[htb-student@skills-foothold]─[~]
+└──╼ $curl http://blog.inlanefreight.local/data/logs/ajax_access.log
+2021-08-24 15:05:00	10.10.14.12	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36	handshake
+┌─[htb-student@skills-foothold]─[~]
+└──╼ $curl http://blog.inlanefreight.local/data/logs/ajax_errors.log
+2021-08-24 15:05:00	10.10.14.12	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36	could not find driver
+┌─[htb-student@skills-foothold]─[~]
+└──╼ $curl http://blog.inlanefreight.local/data/logs/visitors.log
+2021-08-24 15:05:00	10.10.14.12	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36
+```
