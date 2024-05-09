@@ -425,3 +425,8 @@ logs = false
 ### Fortunate information
 
 The Foothold machine don't have any browser in sight and no internet to install one, but I remembered that there is a embedded browser within Burp.
+
+
+###  Vulnerability Disclosed
+
+In one of the blog posts a vulnerability is mentioned for the blog "https://www.exploit-db.com/exploits/50064", in the link is mentioned that script requires authentication to work and also informs us that  it is a metasploit module, after checking the  foothold machine I found the file was already there
