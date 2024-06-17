@@ -3,6 +3,12 @@
 
 ## /etc/shadow
 
+This file contains the hashed passwords of all users in the system and should be accessed by the root user of the system:
+
+```
+$ ls -la /etc/shadow
+-rw-r----- 1 root shadow 1563 Feb 29 18:43 /etc/shadow
+```
 ### Format
 
 ```shell-session
