@@ -13,14 +13,28 @@ htb-student:$y$j9T$3QSBB6CbHEu...SNIP...f8Ms:18955:0:99999:7:::
 ```
 
 
-| htb-student:  | \$y\$j9T$3QSBB6CbHEu...SNIP...f8Ms: | 18955:                  | 0:           | 99999:       | 7:                  | :                      | :                    | :                  |
-| ------------- | ----------------------------------- | ----------------------- | ------------ | ------------ | ------------------- | ---------------------- | -------------------- | ------------------ |
-| `<username>`: | `<encrypted password>`:             | `<day of last change>`: | `<min age>`: | `<max age>`: | `<warning period>`: | `<inactivity period>`: | `<expiration date>`: | `<reserved field>` |
+| Content                             | Meaning                 | Obs |
+| ----------------------------------- | ----------------------- | --- |
+| htb-student:                        | `<username>`:           |     |
+| \$y\$j9T$3QSBB6CbHEu...SNIP...f8Ms: | `<encrypted password>`: |     |
+| 18955:                              | `<day of last change>`: |     |
+| 0:                                  | `<min age>`:            |     |
+| 99999:                              | `<max age>`:            |     |
+| 7:                                  | `<warning period>`:     |     |
+| :                                   | `<inactivity period>`:  |     |
+| :<br>                               | `<expiration date>`:    |     |
+| :                                   | `<reserved field>`      |     |
+
+#### Password Encryption
+
+Considering the following passoword ==`$y$j9T$3QSBB6CbHEu...SNIP...f8Ms:`==
 
 | `$ <id>` | `$ <salt>` | `$ <hashed>`                  |
 | -------- | ---------- | ----------------------------- |
 | `$ y`    | `$ j9T`    | `$ 3QSBB6CbHEu...SNIP...f8Ms` |
 
+
+The type (`<id>`) is the hash algorthm used to encrypt the password. 
 
 |**ID**|**Cryptographic Hash Algorithm**|
 |---|---|
